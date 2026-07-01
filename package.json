@@ -1,17 +1,20 @@
 {
   "name": "actionproof",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "mcpName": "io.github.Burakfenerci5/actionproof",
-  "description": "Tiny, offline, verifiable receipts that prove what an AI agent did. Sign locally, verify anywhere, zero backend.",
+  "description": "Tamper-proof audit trail for AI agents — the verifiable layer of agent observability. Signed, offline-verifiable receipts for every agent action. Zero backend.",
   "type": "module",
   "license": "MIT",
   "keywords": [
     "ai-agents",
+    "agent-observability",
+    "observability",
+    "audit-trail",
     "provenance",
     "receipts",
     "ed25519",
     "mcp",
-    "audit-trail",
+    "compliance",
     "proof-of-execution"
   ],
   "engines": {

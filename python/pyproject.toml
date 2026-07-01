@@ -1,11 +1,11 @@
 [project]
 name = "actionproof"
-version = "0.0.1"
-description = "Verifiable receipts that prove what an AI agent did. Sign locally, verify anywhere, zero backend."
+version = "0.0.3"
+description = "Tamper-proof audit trail for AI agents — the verifiable layer of agent observability. Signed, offline-verifiable receipts for every agent action. Zero backend."
 readme = "README.md"
 license = { text = "MIT" }
 requires-python = ">=3.9"
-keywords = ["ai-agents", "provenance", "receipts", "ed25519", "audit-trail", "proof-of-execution"]
+keywords = ["ai-agents", "agent-observability", "observability", "audit-trail", "provenance", "receipts", "ed25519", "compliance", "proof-of-execution"]
 dependencies = ["cryptography>=41.0"]
 
 [project.optional-dependencies]

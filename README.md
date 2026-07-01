@@ -1,13 +1,23 @@
 # ActionProof
 
-**Verifiable receipts that prove what your AI agent actually did.** Sign locally,
-verify anywhere, zero backend.
+**A tamper-proof audit trail for AI agents.** Verifiable observability: every action your
+agent takes gets a cryptographically signed receipt you can verify offline, anywhere —
+zero backend.
 
-Agents increasingly *act* — they send emails, file forms, book resources, move money.
-But their logs are self-asserted: an agent (or a bug, or an attacker) can claim anything
-happened. ActionProof gives every action a tamper-evident, cryptographically signed
-**receipt** — so you, your user, or a counterparty can later verify *what* was done,
-*by which agent*, *when*, and *on whose authority*.
+Observability tools (LangSmith, Langfuse, Arize) show you what your agent *reportedly*
+did — traces recorded inside their platform, on their word. But those logs are
+self-asserted: an agent, a bug, or an attacker can write anything into them, and you
+can't prove after the fact that the record wasn't edited.
+
+ActionProof adds the missing layer: **verifiable** observability. Each action —
+email sent, form filed, payment made — gets a tamper-evident, Ed25519-signed **receipt**
+capturing *what* was done, *by which agent*, *when*, and *on whose authority*. Edit any
+field and verification fails. It's an audit trail you (or an auditor, a user, or a
+counterparty) can trust without trusting the agent, the vendor, or us.
+
+Built for the compliance floor that's coming — the EU AI Act (Article 12) and ISO 42001
+require traceable, tamper-evident logs for automated decisions. ActionProof produces
+exactly that, as a portable primitive rather than a walled-garden platform.
 
 ## Install
 
@@ -57,11 +67,24 @@ verify(receipt)             # -> VerifyResult(valid=True, agent="did:key:z6Mk...
 
 Edit any field of that receipt and `verify` returns invalid. That's the whole idea.
 
-## Why it's different from a logging/observability tool
+## Where it fits: the verifiable layer of agent observability
 
-LangSmith, Langfuse et al. record what your agent did **inside their platform, on their
-word**. ActionProof receipts are **portable and cryptographic**: they verify offline,
-anywhere, by anyone — with no trust in us or in the agent. It's a *proof*, not a log entry.
+ActionProof complements your observability stack rather than replacing it. Keep using
+LangSmith / Langfuse / Arize for rich traces, latency, and cost — then attach an
+ActionProof receipt to the actions that *matter* (the ones that move money, change state,
+or touch a user's data) so that part of your trail is **tamper-evident and independently
+verifiable**.
+
+| | Observability platforms | ActionProof |
+|---|---|---|
+| Recording | traces/logs inside the vendor | signed receipts you hold |
+| Trust model | trust the platform's stored record | verify cryptographically, trust no one |
+| Tamper-evidence | editable by whoever has DB access | any edit breaks the signature |
+| Portability | lives in the vendor | offline, cross-language, anywhere |
+| Cost at scale | metered per event | ~$0 (local signing, zero backend) |
+
+It's a *proof*, not just a log entry — the difference between "our dashboard says the agent
+did this" and "here's a signed receipt anyone can verify."
 
 ## Design principles
 
@@ -149,12 +172,13 @@ cd python && pip install -e ".[dev]" && pytest   # Python suite (7 tests, incl. 
 
 - **Now (shipped):** TypeScript library + MCP server + framework wrapper, and the Python
   package with a decorator and LangChain/CrewAI callback. Receipts interoperate across both.
-- **Next:** first-class LlamaIndex / CrewAI plugins; more counterparty-evidence binders.
-- **Later (the only paid, optional part):** a hosted **transparency log** — anchor a
-  receipt's hash to a public append-only ledger (Certificate-Transparency style) and get
-  back a shareable proof URL (`/r/<id>`) plus an inclusion proof, for disputes that need
-  third-party trust. **The library and MCP server stay free and offline forever;** only
-  public anchoring is a paid, metered service.
+- **Next:** first-class LlamaIndex / CrewAI plugins; exporters that attach receipts to
+  spans in your existing observability stack (OpenTelemetry, LangSmith, Langfuse).
+- **Later (optional, hosted):** a **verifiable audit dashboard** — a searchable,
+  shareable, tamper-evident timeline of what your fleet of agents did, backed by an
+  append-only log, for teams that need compliance-grade evidence (EU AI Act / ISO 42001)
+  without building it themselves. **The library and MCP server stay free and offline
+  forever;** only the hosted dashboard is a paid service.
 
 ## License
 

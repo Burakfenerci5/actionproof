@@ -6,11 +6,13 @@ and *on whose authority*, without trusting the agent's word.
 
 ## Why
 
-Agents increasingly *act* (send email, file forms, book resources, move money). Today
-there is no cheap, standard way for an agent to **prove after the fact** that an action
-happened and was authorized. Logs are self-asserted and forgeable. ActionProof makes the
-claim cryptographically checkable and tamper-evident — with **zero backend** in the base
-case (the agent signs locally; the verifier checks locally).
+Agents increasingly *act* (send email, file forms, book resources, move money).
+Observability platforms record those actions as traces, but the record lives inside a
+vendor and is editable by whoever holds the database — it's self-asserted. This spec
+defines the **verifiable** layer of agent observability: a receipt that is cryptographically
+checkable and tamper-evident, so the audit trail can be trusted without trusting the agent,
+the vendor, or the verifier — with **zero backend** in the base case (the agent signs
+locally; the verifier checks locally).
 
 Design goals: near-zero cost (no server required), a few lines to adopt, composable with
 payment/authorization protocols (x402, AP2, ACP) rather than competing with them.

@@ -2,8 +2,8 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.Burakfenerci5/actionproof",
   "title": "ActionProof",
-  "description": "Verifiable receipts that prove what an AI agent did. Sign locally, verify anywhere, zero backend.",
-  "version": "0.0.2",
+  "description": "Tamper-proof audit trail for AI agents. Signed receipts, offline-verifiable, zero backend.",
+  "version": "0.0.3",
   "websiteUrl": "https://github.com/Burakfenerci5/actionproof",
   "repository": {
     "url": "https://github.com/Burakfenerci5/actionproof",
@@ -14,7 +14,7 @@
       "registryType": "npm",
       "registryBaseUrl": "https://registry.npmjs.org",
       "identifier": "actionproof",
-      "version": "0.0.2",
+      "version": "0.0.3",
       "transport": {
         "type": "stdio"
       }
