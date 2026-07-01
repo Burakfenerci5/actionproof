@@ -17,18 +17,26 @@
     "node": ">=20"
   },
   "exports": {
-    ".": "./src/index.ts",
-    "./mcp": "./src/mcp.ts"
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./mcp": {
+      "types": "./dist/mcp.d.ts",
+      "import": "./dist/mcp.js"
+    }
   },
   "bin": {
-    "actionproof-mcp": "./src/mcp.ts"
+    "actionproof-mcp": "./dist/mcp.js"
   },
-  "files": ["src", "SPEC.md", "README.md"],
+  "files": ["dist", "SPEC.md", "README.md"],
   "scripts": {
+    "build": "tsc && node scripts/fix-shebang.mjs",
     "demo": "node --experimental-strip-types src/demo.ts",
     "mcp": "node --experimental-strip-types src/mcp.ts",
     "test": "node --experimental-strip-types --test src/*.test.ts",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit --allowImportingTsExtensions",
+    "prepublishOnly": "npm run build && npm test"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
