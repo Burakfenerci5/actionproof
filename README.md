@@ -9,6 +9,17 @@ happened. ActionProof gives every action a tamper-evident, cryptographically sig
 **receipt** — so you, your user, or a counterparty can later verify *what* was done,
 *by which agent*, *when*, and *on whose authority*.
 
+## Install
+
+```bash
+npm install actionproof      # TypeScript / JavaScript
+pip install actionproof      # Python
+```
+
+Receipts are cross-compatible: one signed in TypeScript verifies in Python, and vice-versa.
+
+## Quick start (TypeScript)
+
 ```ts
 import { attest, verify, generateKeypair } from "actionproof";
 
@@ -25,8 +36,26 @@ const receipt = attest(agent, {
 verify(receipt);            // -> { valid: true, agent: "did:key:z6Mk..." }
 ```
 
-Edit any field of that receipt and `verify` returns `{ valid: false }`. That's the whole
-idea.
+## Quick start (Python)
+
+```python
+from actionproof import attest, verify, generate_keypair
+
+agent = generate_keypair()
+
+receipt = attest(
+    agent,
+    type="email.send",
+    summary="Sent renewal quote to jane@acme.com",
+    params={"to": "jane@acme.com", "amount": 4200},  # hashed, not stored in clear
+    result={"smtp": 250},
+    outcome="ok",
+)
+
+verify(receipt)             # -> VerifyResult(valid=True, agent="did:key:z6Mk...")
+```
+
+Edit any field of that receipt and `verify` returns invalid. That's the whole idea.
 
 ## Why it's different from a logging/observability tool
 
@@ -74,20 +103,53 @@ The server mints a stable Ed25519 identity on first run (stored at
 `~/.actionproof/agent.key.pem`, override with `ACTIONPROOF_KEY_PATH`). Every receipt it
 signs is attributable to that one agent `did:key`.
 
-## Use it as a library
+## Auto-emit receipts (framework wrappers)
+
+You don't have to call `attest` by hand after every action — wrap the tool once and every
+call emits a receipt.
+
+TypeScript (framework-agnostic; works with LangChain.js, Mastra, Vercel AI SDK):
+
+```ts
+import { withReceipts, generateKeypair } from "actionproof";
+
+const agent = generateKeypair();
+const send = withReceipts(agent, rawSendEmail, {
+  type: "email.send",
+  onReceipt: (r) => store(r),   // called with a signed receipt on every call
+});
+```
+
+Python (`@attest_action` decorator, or a LangChain/CrewAI callback):
+
+```python
+from actionproof import attest_action, ActionProofCallbackHandler
+
+@attest_action(agent, type="email.send", on_receipt=store)
+def send_email(to, body): ...
+
+# or attest every tool a framework agent runs, no per-tool code:
+handler = ActionProofCallbackHandler(agent, on_receipt=store)
+agent_executor.invoke(input, config={"callbacks": [handler]})
+```
+
+## Develop locally
 
 ```bash
-npm install
+git clone https://github.com/Burakfenerci5/actionproof
+cd actionproof && npm install
 npm run demo     # full sign → verify → tamper loop
-npm test         # 6 tests: validity, tamper, impersonation, hash-binding, PEM round-trip
+npm test         # TS suite (9 tests)
 npm run mcp      # start the MCP server over stdio
+
+cd python && pip install -e ".[dev]" && pytest   # Python suite (7 tests, incl. TS↔Python interop)
 ```
 
 ## Roadmap
 
-- **Now:** TypeScript reference library **+ MCP server** (this repo).
-- **Next:** Python port; LangChain/CrewAI/LlamaIndex plugins so any agent emits receipts by
-  adding one tool.
+- **Now (shipped):** TypeScript library + MCP server + framework wrapper, and the Python
+  package with a decorator and LangChain/CrewAI callback. Receipts interoperate across both.
+- **Next:** first-class LlamaIndex / CrewAI plugins; more counterparty-evidence binders.
 - **Later (the only paid, optional part):** a hosted **transparency log** — anchor a
   receipt's hash to a public append-only ledger (Certificate-Transparency style) and get
   back a shareable proof URL (`/r/<id>`) plus an inclusion proof, for disputes that need
