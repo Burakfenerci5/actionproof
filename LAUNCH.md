@@ -60,59 +60,68 @@ smithery mcp publish -n Burakfenerci5/actionproof   # or publish the npx command
 ## 6. Awesome MCP Servers — PR (90k+ stars, high traffic)
 - Fork https://github.com/punkpeye/awesome-mcp-servers
 - Add under the most fitting category (Security / Developer Tools), alphabetical:
-  `[ActionProof](https://github.com/Burakfenerci5/actionproof) - Verifiable, tamper-evident receipts proving what an AI agent did; sign locally, verify anywhere, zero backend.`
+  `[ActionProof](https://github.com/Burakfenerci5/actionproof) - Tamper-proof audit trail for AI agents; signed, offline-verifiable receipts for every action. Zero backend.`
 
 ---
 
 # Launch posts (copy-paste, tune before posting)
 
+Framing: lead with "verifiable observability / tamper-proof audit trail" (the growing
+market) and — crucially — ask whether this is a real pain. The goal of the launch is a
+demand signal, not just installs.
+
 ## Show HN
-**Title:** Show HN: ActionProof – verifiable receipts that prove what an AI agent did
+**Title:** Show HN: ActionProof – a tamper-proof audit trail for AI agents
 
 **Body:**
-Agents increasingly *act* — send emails, file forms, move money. But their logs are
-self-asserted: an agent, a bug, or an attacker can claim anything happened. There's no
-cheap standard way to prove, after the fact, that an action actually occurred and was
-authorized.
+Observability tools (LangSmith, Langfuse, Arize) show what your agent *reportedly* did —
+traces stored inside a platform, on its word. But those logs are self-asserted: anyone
+with DB access (an agent, a bug, an attacker) can write or edit them, and you can't prove
+after the fact that the record wasn't changed.
 
-ActionProof gives each action a tamper-evident, Ed25519-signed **receipt**. Sign it
-locally, verify it anywhere — offline, no backend, no account. The agent's identity is a
-`did:key` (its public key), so there's nothing to host and nothing to trust but the math.
-Edit any field and verification fails.
+ActionProof adds the missing layer — *verifiable* observability. Each action (email sent,
+form filed, payment made) gets a tamper-evident, Ed25519-signed receipt you can verify
+offline, anywhere. The agent's identity is a `did:key`; edit any field and verification
+fails. It complements your observability stack rather than replacing it — attach a receipt
+to the actions that actually matter.
 
 - `npm install actionproof` / `pip install actionproof` (receipts interoperate across both)
-- Also ships as an MCP server (`npx -y actionproof-mcp`) — three tools: attest_action,
+- Ships as an MCP server (`npx -y actionproof-mcp`) — three tools: attest_action,
   verify_receipt, get_identity — so Claude Desktop / Cursor agents emit receipts with no code.
-- Composable with x402 / AP2 / ACP: bind a counterparty signature into the receipt's
-  result hash to make it as strong as the evidence behind it.
+- Framework wrappers auto-emit receipts (LangChain, CrewAI). Zero backend, zero deps
+  beyond native crypto. MIT.
 
-It's MIT and deliberately tiny (no deps beyond native crypto). Repo:
-https://github.com/Burakfenerci5/actionproof — would love feedback on the receipt format
-(SPEC.md) and whether this is a real pain for people building agents.
+I built this because the audit-trail requirements coming from the EU AI Act (Art. 12) and
+ISO 42001 want tamper-evidence that a vendor-stored log can't really give. **Honest
+question for HN:** is verifiable/tamper-proof agent logging a real need you'd adopt, or do
+your existing traces already cover it? Repo (+ the receipt spec in SPEC.md):
+https://github.com/Burakfenerci5/actionproof
 
 ## Reddit r/AI_Agents  (also fits r/LocalLLaMA, r/mcp)
-**Title:** I built a tiny open-source way to prove what your AI agent actually did (offline, zero backend)
+**Title:** Made a tamper-proof audit trail for AI agents — is verifiable logging something you'd actually use?
 
 **Body:**
-If you build agents that *act* (not just chat), you've probably hit this: after a run, how
-do you *prove* the agent really sent that email / made that booking, and didn't just log
-that it did? Logs are self-asserted and forgeable.
+If you run agents that *act* (not just chat), your observability tool logs what happened —
+but that log lives in a vendor and is editable. You can't hand it to an auditor (or a
+customer) and prove it wasn't changed after the fact.
 
-ActionProof is a small MIT library that makes each action a cryptographically signed,
-tamper-evident receipt — verify it later offline, no server, no account. Works in
-TypeScript and Python (receipts cross-verify), and drops into Claude Desktop / Cursor as an
-MCP server so your agent emits receipts automatically.
+ActionProof is a small MIT library that gives each agent action a cryptographically
+signed, tamper-evident receipt — verify it offline, anywhere, no server or account. Works
+in TypeScript and Python (receipts cross-verify), and drops into Claude Desktop / Cursor
+as an MCP server. Meant to sit *alongside* LangSmith/Langfuse, not replace them.
 
 `npm install actionproof` · `pip install actionproof` · https://github.com/Burakfenerci5/actionproof
 
-Genuinely want to know: is verifiable proof-of-action something you'd use, or do your
-existing logs/observability already cover it? Trying to learn if this is a real gap.
+Genuinely trying to learn if this is a real gap: does anyone actually need *verifiable*
+(not just recorded) agent logs — for compliance, multi-party trust, or disputes — or is
+this a solution looking for a problem? Blunt takes welcome.
 
 ## X / short post
-Agents can *act* now — but can they *prove* they did?
+Your agent's logs say it sent the email. Can you *prove* it — to an auditor, offline,
+without trusting the vendor that stored the log?
 
-ActionProof: tamper-evident, cryptographically signed receipts for AI agent actions.
-Sign locally, verify anywhere, zero backend. TS + Python + MCP. MIT.
+ActionProof: a tamper-proof audit trail for AI agents. Signed, offline-verifiable
+receipts. Sits alongside your observability stack. TS + Python + MCP. MIT.
 
 npm i actionproof · pip install actionproof
 https://github.com/Burakfenerci5/actionproof
