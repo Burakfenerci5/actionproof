@@ -1,0 +1,41 @@
+{
+  "name": "actionproof",
+  "version": "0.0.1",
+  "description": "Tiny, offline, verifiable receipts that prove what an AI agent did. Sign locally, verify anywhere, zero backend.",
+  "type": "module",
+  "license": "MIT",
+  "keywords": [
+    "ai-agents",
+    "provenance",
+    "receipts",
+    "ed25519",
+    "mcp",
+    "audit-trail",
+    "proof-of-execution"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
+  "exports": {
+    ".": "./src/index.ts",
+    "./mcp": "./src/mcp.ts"
+  },
+  "bin": {
+    "actionproof-mcp": "./src/mcp.ts"
+  },
+  "files": ["src", "SPEC.md", "README.md"],
+  "scripts": {
+    "demo": "node --experimental-strip-types src/demo.ts",
+    "mcp": "node --experimental-strip-types src/mcp.ts",
+    "test": "node --experimental-strip-types --test src/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^4.4.3"
+  }
+}
