@@ -1,0 +1,23 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.Burakfenerci5/actionproof",
+  "title": "ActionProof",
+  "description": "Verifiable receipts that prove what an AI agent did. Sign an action locally, verify anywhere, zero backend. Tools: attest_action, verify_receipt, get_identity.",
+  "version": "0.0.2",
+  "websiteUrl": "https://github.com/Burakfenerci5/actionproof",
+  "repository": {
+    "url": "https://github.com/Burakfenerci5/actionproof",
+    "source": "github"
+  },
+  "packages": [
+    {
+      "registryType": "npm",
+      "registryBaseUrl": "https://registry.npmjs.org",
+      "identifier": "actionproof",
+      "version": "0.0.2",
+      "transport": {
+        "type": "stdio"
+      }
+    }
+  ]
+}

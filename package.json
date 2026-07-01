@@ -1,6 +1,7 @@
 {
   "name": "actionproof",
-  "version": "0.0.1",
+  "version": "0.0.2",
+  "mcpName": "io.github.Burakfenerci5/actionproof",
   "description": "Tiny, offline, verifiable receipts that prove what an AI agent did. Sign locally, verify anywhere, zero backend.",
   "type": "module",
   "license": "MIT",
